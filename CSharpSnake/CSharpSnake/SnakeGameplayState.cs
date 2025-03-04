@@ -37,7 +37,7 @@ namespace CSharpSnake
 
             _body.RemoveAt(_body.Count - 1);
             _body.Insert(0, nextCell);
-
+            Console.Clear();
             Console.WriteLine($"{_body[0].x}, {_body[0].y}");
 
         }
