@@ -27,7 +27,7 @@ namespace CSharpSnake
         {
             while (Console.KeyAvailable)
             {
-                var key = Console.ReadKey();
+                var key = Console.ReadKey(true);
                 switch (key.Key)
                 {
                     case ConsoleKey.UpArrow or ConsoleKey.W:
