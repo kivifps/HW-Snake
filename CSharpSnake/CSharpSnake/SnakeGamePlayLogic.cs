@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,13 +8,16 @@ using static CSharpSnake.SnakeGameplayState;
 
 namespace CSharpSnake
 {
-    internal class SnakeControlLogic : BaseControlLogic
+    internal class SnakeGamePlayLogic : BaseGamePlayLogic
     {
         private SnakeGameplayState gameplayState = new SnakeGameplayState();
 
 
         public void GotoGameplay()
         {
+            gameplayState.fieldHeight = screenHeight;
+            gameplayState.fieldWidth = screenWidth;
+            ChangeState(gameplayState);
             gameplayState.Reset();
         }
         public override void OnArrowUp()
@@ -38,7 +42,18 @@ namespace CSharpSnake
 
         public override void Update(float deltaTime)
         {
-            gameplayState.Update(deltaTime);
+            if (currentState != gameplayState)
+                GotoGameplay();
+        }
+        public override ConsoleColor[] CreatePalette()
+        {
+            return
+            [
+                ConsoleColor.Green,
+                ConsoleColor.Red,
+                ConsoleColor.White,
+                ConsoleColor.Blue,
+            ];
         }
     }
 }

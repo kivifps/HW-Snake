@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,16 +13,21 @@ namespace CSharpSnake
         {
             Up, Down, Left, Right
         }
-        private List<Vector2> _body = new List<Vector2>();
+        private List<Vector2> _body = new();
         private SnakeDir currentDir = SnakeDir.Left;
         private float _timeToMove = 0;
+
+        public int fieldWidth {  get; set; }
+        public int fieldHeight { get; set; }
         public override void Reset()
         {
             
             _body.Clear();
+            int middleY = fieldHeight / 2;
+            int middleX = fieldWidth / 2;
             currentDir = SnakeDir.Left;
             _timeToMove = 0;
-            _body.Add(new(0, 0));
+            _body.Add(new(middleX + 3, middleY));
 
         }
         public override void Update(float deltaTime)
@@ -35,9 +41,8 @@ namespace CSharpSnake
             var head = _body[0];
             var nextCell = ShiftTo(head, currentDir);
 
-            _body.RemoveAt(_body.Count - 1);
             _body.Insert(0, nextCell);
-            Console.WriteLine($"{_body[0].x}, {_body[0].y}");
+
 
         }
         private Vector2 ShiftTo(Vector2 from, SnakeDir toDir)
@@ -45,9 +50,9 @@ namespace CSharpSnake
             switch (toDir)
             {
                 case SnakeDir.Up:
-                    return new Vector2(from.x, from.y + 1);
-                case SnakeDir.Down:
                     return new Vector2(from.x, from.y - 1);
+                case SnakeDir.Down:
+                    return new Vector2(from.x, from.y + 1);
                 case SnakeDir.Left:
                     return new Vector2(from.x - 1, from.y);
                 case SnakeDir.Right:
@@ -59,6 +64,16 @@ namespace CSharpSnake
         public void SetDirection(SnakeDir dir)
         {
             currentDir = dir;
+        }
+        
+        public override void Draw(ConsoleRenderer renderer)
+        {
+            foreach(Vector2 cell in _body)
+            {
+
+                renderer.SetPixel(cell.x, cell.y, '■', 3);
+
+            }
         }
     }
 }
