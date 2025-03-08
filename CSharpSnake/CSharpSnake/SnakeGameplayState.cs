@@ -27,6 +27,7 @@ namespace CSharpSnake
             int middleX = fieldWidth / 2;
             currentDir = SnakeDir.Left;
             _timeToMove = 0;
+
             _body.Add(new(middleX + 3, middleY));
 
         }
@@ -41,6 +42,7 @@ namespace CSharpSnake
             var head = _body[0];
             var nextCell = ShiftTo(head, currentDir);
 
+            _body.RemoveAt(_body.Count - 1);
             _body.Insert(0, nextCell);
 
 
