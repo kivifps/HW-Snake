@@ -11,10 +11,14 @@ namespace CSharpSnake
     internal class SnakeGamePlayLogic : BaseGamePlayLogic
     {
         private SnakeGameplayState gameplayState = new SnakeGameplayState();
+        private ShowTextState showTextState = new ShowTextState(2);
+        private bool newGamePanding = false;
+        private int currentLevel;
 
 
         public void GotoGameplay()
         {
+            gameplayState.level = currentLevel;
             gameplayState.fieldHeight = screenHeight;
             gameplayState.fieldWidth = screenWidth;
             ChangeState(gameplayState);
@@ -42,8 +46,24 @@ namespace CSharpSnake
 
         public override void Update(float deltaTime)
         {
-            if (currentState != gameplayState)
+            if (currentState != null && !currentState.IsDone())
+                return;
+            if(currentState == null || currentState == gameplayState && !gameplayState.gameOver)
+            {
+                GoToNextLevel();
+            }
+            else if (currentState == gameplayState && gameplayState.gameOver)
+            {
+                GoToGameOver();
+            }
+            else if(currentState != null && newGamePanding == true)
+            {
+                GoToNextLevel();
+            }
+            else if (currentState != gameplayState && newGamePanding == false)
+            {
                 GotoGameplay();
+            }
         }
         public override ConsoleColor[] CreatePalette()
         {
@@ -54,6 +74,21 @@ namespace CSharpSnake
                 ConsoleColor.White,
                 ConsoleColor.Blue,
             ];
+        }
+        public void GoToGameOver()
+        {
+            currentLevel = 0;
+            newGamePanding = true;
+            showTextState.text = "Game Over!!";
+            ChangeState(showTextState);
+        }
+
+        public void GoToNextLevel()
+        {
+            currentLevel++;
+            newGamePanding = false;
+            showTextState.text = $"Level: {currentLevel}";
+            ChangeState(showTextState);
         }
     }
 }

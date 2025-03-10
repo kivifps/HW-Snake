@@ -8,7 +8,7 @@ namespace CSharpSnake
 {
     public class GameConfig
     {
-        public float frameDelay = 0.25f;
+        public float frameDelay = 1f;
         public float targetFrameTime = 1f / 120f;
 
 
